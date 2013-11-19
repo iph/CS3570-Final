@@ -10,7 +10,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-class Cube {
+class Tetra {
 
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate
@@ -44,23 +44,17 @@ class Cube {
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
     static float squareCoords[] = {
-            -0.5f,  0.5f, 0.50f,
-            -0.5f, -0.5f, 0.50f,
-            0.5f, -0.5f, 0.50f,
-            0.5f,  0.5f, 0.50f,
-
-           -0.5f,  0.5f, -0.50f,
-           -0.5f, -0.5f, -0.50f,
-            0.5f, -0.5f, -0.50f,
-            0.5f,  0.5f, -0.50f };
+            1.0f,  -.661f, 0.0f,
+            -0.5f, -0.661f, 0.866f,
+            -0.5f, -0.661f, -0.866f,
+            0.0f,  0.661f, 0.0f
+    };
 
     private final short drawOrder[] = {
-            0, 1, 2, 0, 2, 3,
-            4, 5, 1, 4, 1, 0,
-            3,2,6,3,6,7,
-            7,4,5,7,5,6,
-            3,7,4,3,4,0,
-            2,6,5,2,1,5
+            1,0,3,
+            2,3,1,
+            0,2,3,
+            2,0,1
     }; // order to draw vertices
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
@@ -68,7 +62,7 @@ class Cube {
     // Set color with red, green, blue and alpha (opacity) values
     float color[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
     @TargetApi(Build.VERSION_CODES.FROYO)
-    public Cube() {
+    public Tetra() {
         Matrix.setIdentityM(rotation, 0);
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
@@ -181,4 +175,5 @@ class Cube {
 
 
 }
+
 

@@ -20,7 +20,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     private static final String TAG = "MyGLRenderer";
     private Triangle mTriangle;
-    volatile Cube   mSquare;
+    volatile Tetra   mSquare;
     volatile Camera mCamera = new Camera();
     private float[] mMVPMatrix = new float[16];
     private final float[] mProjMatrix = new float[16];
@@ -36,7 +36,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
         mTriangle = new Triangle();
-        mSquare   = new Cube();
+        mSquare   = new Tetra();
     }
 
     @TargetApi(Build.VERSION_CODES.FROYO)

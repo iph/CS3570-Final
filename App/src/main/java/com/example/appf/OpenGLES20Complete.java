@@ -17,9 +17,11 @@
 package com.example.appf;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -30,6 +32,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -46,27 +51,42 @@ public class OpenGLES20Complete extends Activity implements SensorEventListener 
     float previousAzimuth = Float.MAX_VALUE;
     float previousRoll = Float.MAX_VALUE;
     float previousPitch = Float.MAX_VALUE;
-    public final static float THRESHOLD = .005f;
-    public final static float ROTATE_AMPLIFY = 1.5f;
+    public final static float THRESHOLD = .0005f;
+    public final static float ROTATE_AMPLIFY = 0.5f;
     float[] mGeomagnetic;
+    float[] mGyroscopeEvent;
     private MyGLSurfaceView mGLView;
     private SensorManager mSensorManager;
     Sensor accelerometer;
     Sensor magnetometer;
+    IMUfilter filter;
+    private Sensor gyroscope;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        filter = new IMUfilter(.1f, 5);
+        filter.reset();
+        Button b = new Button(this);
+        b.setText("Reset");
+        Button c = new Button(this);
+        b.setText("AHHH");
+        LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.VERTICAL);
+        ll.setBackgroundColor(Color.parseColor("#21C9FF"));
+        //this.addContentView(b, new ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        ll.addView(b);
+        ll.addView(c);
         // Create a GLSurfaceView instance and set it
         // as the ContentView for this Activity
         mGLView = new MyGLSurfaceView(this);
-
+        ll.addView(mGLView);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        gyroscope = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         accelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        setContentView(mGLView);
+        setContentView(ll);
     }
 
     @Override
@@ -84,6 +104,7 @@ public class OpenGLES20Complete extends Activity implements SensorEventListener 
         super.onResume();
         mSensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_UI);
         mSensorManager.registerListener(this, magnetometer, SensorManager.SENSOR_DELAY_UI);
+        mSensorManager.registerListener(this, gyroscope, SensorManager.SENSOR_DELAY_UI);
         // The following call resumes a paused rendering thread.
         // If you de-allocated graphic objects for onPause()
         // this is a good place to re-allocate them.
@@ -92,61 +113,69 @@ public class OpenGLES20Complete extends Activity implements SensorEventListener 
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if(event.sensor.getType() == Sensor.TYPE_GYROSCOPE){
+            mGyroscopeEvent = event.values;
+        }
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER)
             mGravity = event.values;
-        if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD)
-            mGeomagnetic = event.values;
-        if (mGravity != null && mGeomagnetic != null) {
-            float R[] = new float[9];
-            float I[] = new float[9];
-            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
-            if (success && mGLView != null && mGLView.mRenderer != null && mGLView.mRenderer.mSquare != null) {
-                float orientation[] = new float[3];
-                SensorManager.getOrientation(R, orientation);
-                azimut = orientation[0]; // orientation contains: azimut, pitch and roll
-                pitch = orientation[1];
-                roll = orientation[2];
-
-                if(previousAzimuth == Float.MAX_VALUE){
-                    previousAzimuth = azimut;
-                }
-                if(previousPitch == Float.MAX_VALUE){
-                    previousPitch = pitch;
-                }
-                if(previousRoll == Float.MAX_VALUE){
-                    previousRoll = roll;
-                }
-                float delta_azimut = azimut - previousAzimuth;
-                float delta_pitch = pitch - previousPitch;
-                float delta_roll = roll - previousRoll;
-                //Log.e("eee", "Azimuth: "+ delta_azimut + " pitch: " + delta_pitch + " roll: " + delta_roll);
-                //Log.e("eee", " roll: " + roll);
 
 
-                if(Math.abs(delta_azimut) > THRESHOLD){
-                    previousAzimuth = azimut;
-                    //mGLView.mRenderer.mCamera.rotateZ(delta_azimut * 180.0/Math.PI );
-                    mGLView.mRenderer.mSquare.rotate((float)(delta_azimut * 180.0/Math.PI) * ROTATE_AMPLIFY, 0, 0, 1 );
 
-                }
+        if(mGravity != null && mGyroscopeEvent != null && mGLView != null && mGLView.mRenderer.mSquare != null){
+            filter.updateFilter(mGyroscopeEvent[0], mGyroscopeEvent[1], mGyroscopeEvent[2], mGravity[0], mGravity[1], mGravity[2]);
+            filter.computerEuler();
+            azimut = (float)filter.getYaw(); // orientation contains: azimut, pitch and roll
+            pitch = (float)filter.getPitch();
+            roll = (float)filter.getRoll();
 
-                if(Math.abs(delta_pitch) > THRESHOLD){
-                    previousPitch = pitch;
-                    //mGLView.mRenderer.mCamera.rotateX(delta_pitch * 180.0/Math.PI );
-                    mGLView.mRenderer.mSquare.rotate((float)(delta_pitch * 180.0/Math.PI)* ROTATE_AMPLIFY, 1, 0, 0 );
+            if(previousAzimuth == Float.MAX_VALUE){
+                previousAzimuth = azimut;
+            }
+            if(previousPitch == Float.MAX_VALUE){
+                previousPitch = pitch;
+            }
+            if(previousRoll == Float.MAX_VALUE){
+                previousRoll = roll;
+            }
+
+            float delta_azimut = azimut - previousAzimuth;
+            float delta_pitch = pitch - previousPitch;
+            float delta_roll = roll - previousRoll;
+            //Log.e("eee", "Azimuth: "+ delta_azimut + " pitch: " + delta_pitch + " roll: " + delta_roll);
+            //Log.e("eee", " roll: " + roll);
+            //Log.e("eee", "Azimuth: " + azimut + " pitch: " + pitch + " roll: " + roll);
 
 
-                }
+            if(Math.abs(delta_roll) > THRESHOLD && roll != Float.NaN){
+                previousRoll = roll;
+                //mGLView.mRenderer.mCamera.rotateX(delta_roll * 180.0/Math.PI * ROTATE_AMPLIFY);
+                //mGLView.mRenderer.mSquare.rotate((float) (delta_roll * 180.0 / Math.PI) * ROTATE_AMPLIFY, 1, 0, 0);
+                mGLView.mRenderer.mSquare.pure_rotate((float) ((roll + Math.PI)* 180.0 / Math.PI), 1, 0, 0);
+            }
 
-                if(Math.abs(delta_roll) > THRESHOLD){
-                    previousRoll = roll;
-                    mGLView.mRenderer.mSquare.rotate((float) (delta_roll * 180.0 / Math.PI) * ROTATE_AMPLIFY, 0, 1, 0);
-                }
+            if(Math.abs(delta_pitch) > THRESHOLD && pitch != Float.NaN){
+                previousPitch = pitch;
+               //mGLView.mRenderer.mCamera.rotateX(delta_pitch * 180.0/Math.PI  * ROTATE_AMPLIFY );
+                //Log.e("eee", "" + ((delta_pitch)* 180.0 / Math.PI) );
 
-                mGLView.requestRender();
+                mGLView.mRenderer.mSquare.pure_rotate((float)((pitch + Math.PI) * 180.0/Math.PI), 0, 1, 0 );
+
 
             }
+
+            if(Math.abs(delta_azimut) > THRESHOLD && azimut != Float.NaN){
+                previousAzimuth = azimut;
+                //mGLView.mRenderer.mCamera.rotateY(delta_azimut * 180.0/Math.PI  * ROTATE_AMPLIFY);
+                //mGLView.mRenderer.mSquare.rotate((float)(delta_azimut * 180.0/Math.PI) * ROTATE_AMPLIFY, 0, 0, 1 );
+                mGLView.mRenderer.mSquare.pure_rotate((float)(azimut * 180.0/Math.PI) , 0, 0, 1 );
+            }
+
+
+            mGLView.requestRender();
         }
+
+
+
     }
 
     @Override
@@ -224,334 +253,218 @@ class MyGLSurfaceView extends GLSurfaceView {
         return true;
     }
 }
-class SensorFusion
-        implements SensorEventListener {
-
-    private SensorManager mSensorManager = null;
-
-    // angular speeds from gyro
-    private float[] gyro = new float[3];
-
-    // rotation matrix from gyro data
-    private float[] gyroMatrix = new float[9];
-
-    // orientation angles from gyro matrix
-    private float[] gyroOrientation = new float[3];
-
-    // magnetic field vector
-    private float[] magnet = new float[3];
-
-    // accelerometer vector
-    private float[] accel = new float[3];
-
-    // orientation angles from accel and magnet
-    private float[] accMagOrientation = new float[3];
-
-    // final orientation angles from sensor fusion
-    private float[] fusedOrientation = new float[3];
-
-    // accelerometer and magnetometer based rotation matrix
-    private float[] rotationMatrix = new float[9];
-
-    public static final float EPSILON = 0.000000001f;
-    private static final float NS2S = 1.0f / 1000000000.0f;
-    private float timestamp;
-    private boolean initState = true;
-
-    public static final int TIME_CONSTANT = 30;
-    public static final float FILTER_COEFFICIENT = 0.98f;
-    private Timer fuseTimer = new Timer();
-
-    // The following members are only for displaying the sensor output.
-    public Handler mHandler;
-
-    DecimalFormat d = new DecimalFormat("#.##");
 
 
-    public void onCreate(SensorManager sense) {
-        gyroOrientation[0] = 0.0f;
-        gyroOrientation[1] = 0.0f;
-        gyroOrientation[2] = 0.0f;
+class IMUfilter{
 
-        // initialise gyroMatrix with identity matrix
-        gyroMatrix[0] = 1.0f; gyroMatrix[1] = 0.0f; gyroMatrix[2] = 0.0f;
-        gyroMatrix[3] = 0.0f; gyroMatrix[4] = 1.0f; gyroMatrix[5] = 0.0f;
-        gyroMatrix[6] = 0.0f; gyroMatrix[7] = 0.0f; gyroMatrix[8] = 1.0f;
+    int firstUpdate;
 
-        // get sensorManager and initialise sensor listeners
-        mSensorManager = sense;
-        initListeners();
+    //Quaternion orientation of earth frame relative to auxiliary frame.
+    double AEq_1;
+    double AEq_2;
+    double AEq_3;
+    double AEq_4;
 
-        // wait for one second until gyroscope and magnetometer/accelerometer
-        // data is initialised then scedule the complementary filter task
-        fuseTimer.scheduleAtFixedRate(new calculateFusedOrientationTask(),
-                1000, TIME_CONSTANT);
+    //Estimated orientation quaternion elements with initial conditions.
+    double SEq_1;
+    double SEq_2;
+    double SEq_3;
+    double SEq_4;
 
-        // GUI stuff
-        mHandler = new Handler();
-        //d.setRoundingMode(RoundingMode.HALF_UP);
-        d.setMaximumFractionDigits(3);
-        d.setMinimumFractionDigits(3);
+    //Sampling period
+    double deltat;
+
+    //Gyroscope measurement error (in degrees per second).
+    double gyroMeasError;
+
+    //Compute beta (filter tuning constant..
+    double beta;
+
+    double phi;
+    double theta;
+    double psi;
+
+
+    public IMUfilter(double rate, double gyroscopeMeasurementError){
+        firstUpdate = 0;
+
+        //Quaternion orientation of earth frame relative to auxiliary frame.
+        AEq_1 = 1;
+        AEq_2 = 0;
+        AEq_3 = 0;
+        AEq_4 = 0;
+
+        //Estimated orientation quaternion elements with initial conditions.
+        SEq_1 = 1;
+        SEq_2 = 0;
+        SEq_3 = 0;
+        SEq_4 = 0;
+
+        //Sampling period (typical value is ~0.1s).
+        deltat = rate;
+
+        //Gyroscope measurement error (in degrees per second).
+        gyroMeasError = gyroscopeMeasurementError;
+
+        //Compute beta.
+        beta = Math.sqrt(3.0 / 4.0) * (Math.PI * (gyroMeasError / 180.0));
 
     }
 
-    public void onStop() {
-        // unregister sensor listeners to prevent the activity from draining the device's battery.
-        mSensorManager.unregisterListener(this);
-    }
+    public void updateFilter(double w_x, double w_y, double w_z, double a_x, double a_y, double a_z){
 
-    protected void onPause() {
-        // unregister sensor listeners to prevent the activity from draining the device's battery.
-        mSensorManager.unregisterListener(this);
-    }
+        //Vector norm.
+        double norm;
+        //Quaternion rate from gyroscope elements.
+        double SEqDot_omega_1;
+        double SEqDot_omega_2;
+        double SEqDot_omega_3;
+        double SEqDot_omega_4;
+        //Objective function elements.
+        double f_1;
+        double f_2;
+        double f_3;
+        //Objective function Jacobian elements.
+        double J_11or24;
+        double J_12or23;
+        double J_13or22;
+        double J_14or21;
+        double J_32;
+        double J_33;
+        //Objective function gradient elements.
+        double nablaf_1;
+        double nablaf_2;
+        double nablaf_3;
+        double nablaf_4;
 
-    public void onResume() {
-        // restore the sensor listeners when user resumes the application.
-        initListeners();
-    }
+        //Auxiliary variables to avoid reapeated calcualtions.
+        double halfSEq_1 = 0.5 * SEq_1;
+        double halfSEq_2 = 0.5 * SEq_2;
+        double halfSEq_3 = 0.5 * SEq_3;
+        double halfSEq_4 = 0.5 * SEq_4;
+        double twoSEq_1 = 2.0 * SEq_1;
+        double twoSEq_2 = 2.0 * SEq_2;
+        double twoSEq_3 = 2.0 * SEq_3;
 
-    // This function registers sensor listeners for the accelerometer, magnetometer and gyroscope.
-    public void initListeners(){
-        mSensorManager.registerListener(this,
-                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_FASTEST);
+        //Compute the quaternion rate measured by gyroscopes.
+        SEqDot_omega_1 = -halfSEq_2 * w_x - halfSEq_3 * w_y - halfSEq_4 * w_z;
+        SEqDot_omega_2 = halfSEq_1 * w_x + halfSEq_3 * w_z - halfSEq_4 * w_y;
+        SEqDot_omega_3 = halfSEq_1 * w_y - halfSEq_2 * w_z + halfSEq_4 * w_x;
+        SEqDot_omega_4 = halfSEq_1 * w_z + halfSEq_2 * w_y - halfSEq_3 * w_x;
 
-        mSensorManager.registerListener(this,
-                mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE),
-                SensorManager.SENSOR_DELAY_FASTEST);
+        //Normalise the accelerometer measurement.
+        norm = Math.sqrt(a_x * a_x + a_y * a_y + a_z * a_z);
+        a_x /= norm;
+        a_y /= norm;
+        a_z /= norm;
 
-        mSensorManager.registerListener(this,
-                mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
-                SensorManager.SENSOR_DELAY_FASTEST);
-    }
+        //Compute the objective function and Jacobian.
+        f_1 = twoSEq_2 * SEq_4 - twoSEq_1 * SEq_3 - a_x;
+        f_2 = twoSEq_1 * SEq_2 + twoSEq_3 * SEq_4 - a_y;
+        f_3 = 1.0 - twoSEq_2 * SEq_2 - twoSEq_3 * SEq_3 - a_z;
+        //J_11 negated in matrix multiplication.
+        J_11or24 = twoSEq_3;
+        J_12or23 = 2 * SEq_4;
+        //J_12 negated in matrix multiplication
+        J_13or22 = twoSEq_1;
+        J_14or21 = twoSEq_2;
+        //Negated in matrix multiplication.
+        J_32 = 2 * J_14or21;
+        //Negated in matrix multiplication.
+        J_33 = 2 * J_11or24;
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-    }
+        //Compute the gradient (matrix multiplication).
+        nablaf_1 = J_14or21 * f_2 - J_11or24 * f_1;
+        nablaf_2 = J_12or23 * f_1 + J_13or22 * f_2 - J_32 * f_3;
+        nablaf_3 = J_12or23 * f_2 - J_33 * f_3 - J_13or22 * f_1;
+        nablaf_4 = J_14or21 * f_1 + J_11or24 * f_2;
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        switch(event.sensor.getType()) {
-            case Sensor.TYPE_ACCELEROMETER:
-                // copy new accelerometer data into accel array and calculate orientation
-                System.arraycopy(event.values, 0, accel, 0, 3);
-                calculateAccMagOrientation();
-                break;
+        //Normalise the gradient.
+        norm = Math.sqrt(nablaf_1 * nablaf_1 + nablaf_2 * nablaf_2 + nablaf_3 * nablaf_3 + nablaf_4 * nablaf_4);
+        nablaf_1 /= norm;
+        nablaf_2 /= norm;
+        nablaf_3 /= norm;
+        nablaf_4 /= norm;
 
-            case Sensor.TYPE_GYROSCOPE:
-                // process gyro data
-                gyroFunction(event);
-                break;
+        //Compute then integrate the estimated quaternion rate.
+        SEq_1 += (SEqDot_omega_1 - (beta * nablaf_1)) * deltat;
+        SEq_2 += (SEqDot_omega_2 - (beta * nablaf_2)) * deltat;
+        SEq_3 += (SEqDot_omega_3 - (beta * nablaf_3)) * deltat;
+        SEq_4 += (SEqDot_omega_4 - (beta * nablaf_4)) * deltat;
 
-            case Sensor.TYPE_MAGNETIC_FIELD:
-                // copy new magnetometer data into magnet array
-                System.arraycopy(event.values, 0, magnet, 0, 3);
-                break;
-        }
-    }
+        //Normalise quaternion
+        norm = Math.sqrt(SEq_1 * SEq_1 + SEq_2 * SEq_2 + SEq_3 * SEq_3 + SEq_4 * SEq_4);
+        SEq_1 /= norm;
+        SEq_2 /= norm;
+        SEq_3 /= norm;
+        SEq_4 /= norm;
 
-    // calculates orientation angles from accelerometer and magnetometer output
-    public void calculateAccMagOrientation() {
-        if(SensorManager.getRotationMatrix(rotationMatrix, null, accel, magnet)) {
-            SensorManager.getOrientation(rotationMatrix, accMagOrientation);
-        }
-    }
-
-    // This function is borrowed from the Android reference
-    // at http://developer.android.com/reference/android/hardware/SensorEvent.html#values
-    // It calculates a rotation vector from the gyroscope angular speed values.
-    private void getRotationVectorFromGyro(float[] gyroValues,
-                                           float[] deltaRotationVector,
-                                           float timeFactor)
-    {
-        float[] normValues = new float[3];
-
-        // Calculate the angular speed of the sample
-        float omegaMagnitude =
-                (float)Math.sqrt(gyroValues[0] * gyroValues[0] +
-                        gyroValues[1] * gyroValues[1] +
-                        gyroValues[2] * gyroValues[2]);
-
-        // Normalize the rotation vector if it's big enough to get the axis
-        if(omegaMagnitude > EPSILON) {
-            normValues[0] = gyroValues[0] / omegaMagnitude;
-            normValues[1] = gyroValues[1] / omegaMagnitude;
-            normValues[2] = gyroValues[2] / omegaMagnitude;
-        }
-
-        // Integrate around this axis with the angular speed by the timestep
-        // in order to get a delta rotation from this sample over the timestep
-        // We will convert this axis-angle representation of the delta rotation
-        // into a quaternion before turning it into the rotation matrix.
-        float thetaOverTwo = omegaMagnitude * timeFactor;
-        float sinThetaOverTwo = (float)Math.sin(thetaOverTwo);
-        float cosThetaOverTwo = (float)Math.cos(thetaOverTwo);
-        deltaRotationVector[0] = sinThetaOverTwo * normValues[0];
-        deltaRotationVector[1] = sinThetaOverTwo * normValues[1];
-        deltaRotationVector[2] = sinThetaOverTwo * normValues[2];
-        deltaRotationVector[3] = cosThetaOverTwo;
-    }
-
-    // This function performs the integration of the gyroscope data.
-    // It writes the gyroscope based orientation into gyroOrientation.
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-    public void gyroFunction(SensorEvent event) {
-        // don't start until first accelerometer/magnetometer orientation has been acquired
-        if (accMagOrientation == null)
-            return;
-
-        // initialisation of the gyroscope based rotation matrix
-        if(initState) {
-            float[] initMatrix = new float[9];
-            initMatrix = getRotationMatrixFromOrientation(accMagOrientation);
-            float[] test = new float[3];
-            SensorManager.getOrientation(initMatrix, test);
-            gyroMatrix = matrixMultiplication(gyroMatrix, initMatrix);
-            initState = false;
+        if (firstUpdate == 0) {
+            //Store orientation of auxiliary frame.
+            AEq_1 = SEq_1;
+            AEq_2 = SEq_2;
+            AEq_3 = SEq_3;
+            AEq_4 = SEq_4;
+            firstUpdate = 1;
         }
 
-        // copy the new gyro values into the gyro array
-        // convert the raw gyro data into a rotation vector
-        float[] deltaVector = new float[4];
-        if(timestamp != 0) {
-            final float dT = (event.timestamp - timestamp) * NS2S;
-            System.arraycopy(event.values, 0, gyro, 0, 3);
-            getRotationVectorFromGyro(gyro, deltaVector, dT / 2.0f);
-        }
-
-        // measurement done, save current time for next interval
-        timestamp = event.timestamp;
-
-        // convert rotation vector into rotation matrix
-        float[] deltaMatrix = new float[9];
-        SensorManager.getRotationMatrixFromVector(deltaMatrix, deltaVector);
-
-        // apply the new rotation interval on the gyroscope based rotation matrix
-        gyroMatrix = matrixMultiplication(gyroMatrix, deltaMatrix);
-
-        // get the gyroscope based orientation from the rotation matrix
-        SensorManager.getOrientation(gyroMatrix, gyroOrientation);
     }
 
-    private float[] getRotationMatrixFromOrientation(float[] o) {
-        float[] xM = new float[9];
-        float[] yM = new float[9];
-        float[] zM = new float[9];
+    public void computerEuler(){
 
-        float sinX = (float)Math.sin(o[1]);
-        float cosX = (float)Math.cos(o[1]);
-        float sinY = (float)Math.sin(o[2]);
-        float cosY = (float)Math.cos(o[2]);
-        float sinZ = (float)Math.sin(o[0]);
-        float cosZ = (float)Math.cos(o[0]);
+        //Quaternion describing orientation of sensor relative to earth.
+        double ESq_1, ESq_2, ESq_3, ESq_4;
+        //Quaternion describing orientation of sensor relative to auxiliary frame.
+        double ASq_1, ASq_2, ASq_3, ASq_4;
 
-        // rotation about x-axis (pitch)
-        xM[0] = 1.0f; xM[1] = 0.0f; xM[2] = 0.0f;
-        xM[3] = 0.0f; xM[4] = cosX; xM[5] = sinX;
-        xM[6] = 0.0f; xM[7] = -sinX; xM[8] = cosX;
+        //Compute the quaternion conjugate.
+        ESq_1 = SEq_1;
+        ESq_2 = -SEq_2;
+        ESq_3 = -SEq_3;
+        ESq_4 = -SEq_4;
 
-        // rotation about y-axis (roll)
-        yM[0] = cosY; yM[1] = 0.0f; yM[2] = sinY;
-        yM[3] = 0.0f; yM[4] = 1.0f; yM[5] = 0.0f;
-        yM[6] = -sinY; yM[7] = 0.0f; yM[8] = cosY;
+        //Compute the quaternion product.
+        ASq_1 = ESq_1 * AEq_1 - ESq_2 * AEq_2 - ESq_3 * AEq_3 - ESq_4 * AEq_4;
+        ASq_2 = ESq_1 * AEq_2 + ESq_2 * AEq_1 + ESq_3 * AEq_4 - ESq_4 * AEq_3;
+        ASq_3 = ESq_1 * AEq_3 - ESq_2 * AEq_4 + ESq_3 * AEq_1 + ESq_4 * AEq_2;
+        ASq_4 = ESq_1 * AEq_4 + ESq_2 * AEq_3 - ESq_3 * AEq_2 + ESq_4 * AEq_1;
 
-        // rotation about z-axis (azimuth)
-        zM[0] = cosZ; zM[1] = sinZ; zM[2] = 0.0f;
-        zM[3] = -sinZ; zM[4] = cosZ; zM[5] = 0.0f;
-        zM[6] = 0.0f; zM[7] = 0.0f; zM[8] = 1.0f;
-
-        // rotation order is y, x, z (roll, pitch, azimuth)
-        float[] resultMatrix = matrixMultiplication(xM, yM);
-        resultMatrix = matrixMultiplication(zM, resultMatrix);
-        return resultMatrix;
+        //Compute the Euler angles from the quaternion.
+        phi = Math.atan2(2 * ASq_3 * ASq_4 - 2 * ASq_1 * ASq_2, 2 * ASq_1 * ASq_1 + 2 * ASq_4 * ASq_4 - 1);
+        theta = Math.asin(2 * ASq_2 * ASq_3 - 2 * ASq_1 * ASq_3);
+        psi = Math.atan2(2 * ASq_2 * ASq_3 - 2 * ASq_1 * ASq_4, 2 * ASq_1 * ASq_1 + 2 * ASq_2 * ASq_2 - 1);
     }
 
-    private float[] matrixMultiplication(float[] A, float[] B) {
-        float[] result = new float[9];
-
-        result[0] = A[0] * B[0] + A[1] * B[3] + A[2] * B[6];
-        result[1] = A[0] * B[1] + A[1] * B[4] + A[2] * B[7];
-        result[2] = A[0] * B[2] + A[1] * B[5] + A[2] * B[8];
-
-        result[3] = A[3] * B[0] + A[4] * B[3] + A[5] * B[6];
-        result[4] = A[3] * B[1] + A[4] * B[4] + A[5] * B[7];
-        result[5] = A[3] * B[2] + A[4] * B[5] + A[5] * B[8];
-
-        result[6] = A[6] * B[0] + A[7] * B[3] + A[8] * B[6];
-        result[7] = A[6] * B[1] + A[7] * B[4] + A[8] * B[7];
-        result[8] = A[6] * B[2] + A[7] * B[5] + A[8] * B[8];
-
-        return result;
+    public double getYaw(){
+        return psi;
     }
 
-    class calculateFusedOrientationTask extends TimerTask {
-        public void run() {
-            float oneMinusCoeff = 1.0f - FILTER_COEFFICIENT;
-
-            /*
-             * Fix for 179� <--> -179� transition problem:
-             * Check whether one of the two orientation angles (gyro or accMag) is negative while the other one is positive.
-             * If so, add 360� (2 * math.PI) to the negative value, perform the sensor fusion, and remove the 360� from the result
-             * if it is greater than 180�. This stabilizes the output in positive-to-negative-transition cases.
-             */
-
-            // azimuth
-            if (gyroOrientation[0] < -0.5 * Math.PI && accMagOrientation[0] > 0.0) {
-                fusedOrientation[0] = (float) (FILTER_COEFFICIENT * (gyroOrientation[0] + 2.0 * Math.PI) + oneMinusCoeff * accMagOrientation[0]);
-                fusedOrientation[0] -= (fusedOrientation[0] > Math.PI) ? 2.0 * Math.PI : 0;
-            }
-            else if (accMagOrientation[0] < -0.5 * Math.PI && gyroOrientation[0] > 0.0) {
-                fusedOrientation[0] = (float) (FILTER_COEFFICIENT * gyroOrientation[0] + oneMinusCoeff * (accMagOrientation[0] + 2.0 * Math.PI));
-                fusedOrientation[0] -= (fusedOrientation[0] > Math.PI)? 2.0 * Math.PI : 0;
-            }
-            else {
-                fusedOrientation[0] = FILTER_COEFFICIENT * gyroOrientation[0] + oneMinusCoeff * accMagOrientation[0];
-            }
-
-            // pitch
-            if (gyroOrientation[1] < -0.5 * Math.PI && accMagOrientation[1] > 0.0) {
-                fusedOrientation[1] = (float) (FILTER_COEFFICIENT * (gyroOrientation[1] + 2.0 * Math.PI) + oneMinusCoeff * accMagOrientation[1]);
-                fusedOrientation[1] -= (fusedOrientation[1] > Math.PI) ? 2.0 * Math.PI : 0;
-            }
-            else if (accMagOrientation[1] < -0.5 * Math.PI && gyroOrientation[1] > 0.0) {
-                fusedOrientation[1] = (float) (FILTER_COEFFICIENT * gyroOrientation[1] + oneMinusCoeff * (accMagOrientation[1] + 2.0 * Math.PI));
-                fusedOrientation[1] -= (fusedOrientation[1] > Math.PI)? 2.0 * Math.PI : 0;
-            }
-            else {
-                fusedOrientation[1] = FILTER_COEFFICIENT * gyroOrientation[1] + oneMinusCoeff * accMagOrientation[1];
-            }
-
-            // roll
-            if (gyroOrientation[2] < -0.5 * Math.PI && accMagOrientation[2] > 0.0) {
-                fusedOrientation[2] = (float) (FILTER_COEFFICIENT * (gyroOrientation[2] + 2.0 * Math.PI) + oneMinusCoeff * accMagOrientation[2]);
-                fusedOrientation[2] -= (fusedOrientation[2] > Math.PI) ? 2.0 * Math.PI : 0;
-            }
-            else if (accMagOrientation[2] < -0.5 * Math.PI && gyroOrientation[2] > 0.0) {
-                fusedOrientation[2] = (float) (FILTER_COEFFICIENT * gyroOrientation[2] + oneMinusCoeff * (accMagOrientation[2] + 2.0 * Math.PI));
-                fusedOrientation[2] -= (fusedOrientation[2] > Math.PI)? 2.0 * Math.PI : 0;
-            }
-            else {
-                fusedOrientation[2] = FILTER_COEFFICIENT * gyroOrientation[2] + oneMinusCoeff * accMagOrientation[2];
-            }
-
-            // overwrite gyro matrix and orientation with fused orientation
-            // to comensate gyro drift
-            gyroMatrix = getRotationMatrixFromOrientation(fusedOrientation);
-            System.arraycopy(fusedOrientation, 0, gyroOrientation, 0, 3);
-
-
-            // update sensor output in GUI
-            mHandler.post(updateOreintationDisplayTask);
-        }
+    public double getPitch(){
+        return theta;
     }
 
+    public double getRoll(){
+        return phi;
+    }
 
-    // **************************** GUI FUNCTIONS *********************************
+    public void reset(){
 
 
-    private Runnable updateOreintationDisplayTask = new Runnable() {
-        public void run() {
-            //updateOreintationDisplay();
-        }
-    };
+        firstUpdate = 0;
+
+        //Quaternion orientation of earth frame relative to auxiliary frame.
+        AEq_1 = 1;
+        AEq_2 = 0;
+        AEq_3 = 0;
+        AEq_4 = 0;
+
+        //Estimated orientation quaternion elements with initial conditions.
+        SEq_1 = 1;
+        SEq_2 = 0;
+        SEq_3 = 0;
+        SEq_4 = 0;
+
+
+
+    }
 }
