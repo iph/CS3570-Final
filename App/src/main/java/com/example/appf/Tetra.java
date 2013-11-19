@@ -17,21 +17,24 @@ class Tetra {
             // the coordinates of the objects that use this vertex shader
             "uniform mat4 uMVPMatrix;" +
                     "uniform mat4 rotationMatrix;" +
-
+                    "attribute vec4 vColor;" +
                     "attribute vec4 vPosition;" +
+                    "varying vec4 fColor;" +
                     "void main() {" +
                     // the matrix must be included as a modifier of gl_Position
                     "  gl_Position = uMVPMatrix * rotationMatrix * vPosition ;" +
+                    " fColor = vColor;"+
                     "}";
 
     private final String fragmentShaderCode =
             "precision mediump float;" +
-                    "uniform vec4 vColor;" +
+                    "varying vec4 fColor;" +
                     "void main() {" +
-                    "  gl_FragColor = vColor;" +
+                    "  gl_FragColor = fColor;" +
                     "}";
 
     private final FloatBuffer vertexBuffer;
+    private final FloatBuffer colorBuffer;
     private final ShortBuffer drawListBuffer;
     private final int mProgram;
     private int mRotationHandle;
@@ -42,6 +45,7 @@ class Tetra {
     private float[] axis_degrees = new float[3];
 
     // number of coordinates per vertex in this array
+    static final int RGB_PER_VERTEX = 4;
     static final int COORDS_PER_VERTEX = 3;
     static float squareCoords[] = {
             1.0f,  -.661f, 0.0f,
@@ -50,15 +54,22 @@ class Tetra {
             0.0f,  0.661f, 0.0f
     };
 
+    static float colorCoords[] = {
+            1.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, 1.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 0.0f, 1.0f
+    };
     private final short drawOrder[] = {
-            1,0,3,
-            2,3,1,
-            0,2,3,
-            2,0,1
+            0,3,1,
+            2,1,3,
+            3,2,0,
+            0,1,2
     }; // order to draw vertices
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
+    private final int colorStride = RGB_PER_VERTEX * 4;
     // Set color with red, green, blue and alpha (opacity) values
     float color[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
     @TargetApi(Build.VERSION_CODES.FROYO)
@@ -73,6 +84,12 @@ class Tetra {
         vertexBuffer.put(squareCoords);
         vertexBuffer.position(0);
 
+
+        ByteBuffer cb = ByteBuffer.allocateDirect(colorCoords.length * 4);
+        cb.order(ByteOrder.nativeOrder());
+        colorBuffer = cb.asFloatBuffer();
+        colorBuffer.put(colorCoords);
+        colorBuffer.position(0);
         // initialize byte buffer for the draw list
         ByteBuffer dlb = ByteBuffer.allocateDirect(
                 // (# of coordinate values * 2 bytes per short)
@@ -142,20 +159,21 @@ class Tetra {
 
         // get handle to vertex shader's vPosition member
         mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
-
+        mColorHandle = GLES20.glGetAttribLocation(mProgram, "vColor");
         // Enable a handle to the triangle vertices
         GLES20.glEnableVertexAttribArray(mPositionHandle);
-
         // Prepare the triangle coordinate data
         GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX,
                 GLES20.GL_FLOAT, false,
                 vertexStride, vertexBuffer);
 
+        GLES20.glEnableVertexAttribArray(mColorHandle);
+        GLES20.glVertexAttribPointer(mColorHandle, RGB_PER_VERTEX, GLES20.GL_FLOAT, false, colorStride, colorBuffer);
         // get handle to fragment shader's vColor member
-        mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
+        //mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
 
         // Set color for drawing the triangle
-        GLES20.glUniform4fv(mColorHandle, 1, color, 0);
+        //GLES20.glUniform4fv(mColorHandle, 1, color, 0);
 
         // get handle to shape's transformation matrix
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
