@@ -37,6 +37,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -259,7 +261,7 @@ public class CS3570 extends Activity implements SensorEventListener {
 			JSONObject obj = new JSONObject(jsonBlob);
 			// TODO: Create / do some json action
 			
-			jsonBlob = '';
+			jsonBlob = "";
 		    }
                     Log.d("pew", handler.toString());
                     handler.post(new updateUIThread(currentText));
