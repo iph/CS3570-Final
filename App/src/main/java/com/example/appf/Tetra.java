@@ -10,7 +10,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-class Tetra {
+class Tetra extends Shape{
 
     private final String vertexShaderCode =
             // This matrix member variable provides a hook to manipulate
@@ -33,20 +33,7 @@ class Tetra {
                     "  gl_FragColor = fColor;" +
                     "}";
 
-    private final FloatBuffer vertexBuffer;
-    private final FloatBuffer colorBuffer;
-    private final ShortBuffer drawListBuffer;
-    private final int mProgram;
-    private int mRotationHandle;
-    private int mPositionHandle;
-    private int mColorHandle;
-    private int mMVPMatrixHandle;
-    private float[] rotation = new float[16];
-    private float[] axis_degrees = new float[3];
 
-    // number of coordinates per vertex in this array
-    static final int RGB_PER_VERTEX = 4;
-    static final int COORDS_PER_VERTEX = 3;
     static float squareCoords[] = {
             1.0f,  -.661f, 0.0f,
             -0.5f, -0.661f, 0.866f,
@@ -67,9 +54,7 @@ class Tetra {
             0,1,2
     }; // order to draw vertices
 
-    private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
-    private final int colorStride = RGB_PER_VERTEX * 4;
     // Set color with red, green, blue and alpha (opacity) values
     float color[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
     @TargetApi(Build.VERSION_CODES.FROYO)
@@ -111,31 +96,7 @@ class Tetra {
         GLES20.glLinkProgram(mProgram);                  // create OpenGL program executables
     }
 
-    public void rotate(float degrees, int axis_x, int axis_y, int axis_z){
-        float[] scratch = new float[16];
-        float[] old_rotate = rotation;
-        float[] new_rotate = new float[16];
-        Matrix.setRotateM(scratch, 0, degrees, axis_x, axis_y, axis_z);
-        Matrix.multiplyMM(new_rotate, 0, old_rotate, 0, scratch, 0);
-        rotation = new_rotate;
 
-    }
-
-    public void pure_rotate(float degrees, int axis_x, int axis_y, int axis_z){
-        float[] scratch = new float[16];
-        float[] new_rotate = new float[16];
-        if(axis_x == 1){
-            axis_degrees[0] = degrees;
-        }
-        else if(axis_y == 1){
-            axis_degrees[1] = degrees;
-        }
-        else if(axis_z == 1){
-            axis_degrees[2] = degrees;
-        }
-        //Matrix.setRotateM(scratch, 0, degrees, axis_x, axis_y, axis_z);
-        //rotation = scratch;
-    }
     @TargetApi(Build.VERSION_CODES.FROYO)
     public void draw(float[] mvpMatrix) {
         // Add program to OpenGL environment

@@ -68,7 +68,7 @@
       </breakpoint>
     </breakpoint_any>
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <line_breakpoints>
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint url="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/ServerActivity.java" line="58" class="com.example.appf.ServerActivity" package="com.example.appf">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
@@ -94,47 +94,43 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CS3570.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="CS3570.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/CS3570.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="126" column="12" selection-start="4288" selection-end="4288" vertical-scroll-proportion="0.84586465" vertical-offset="1818" max-vertical-offset="10728">
+            <state line="362" column="0" selection-start="12655" selection-end="12655" vertical-scroll-proportion="0.0" vertical-offset="9735" max-vertical-offset="10566">
               <folding>
-                <element signature="e#0#19942#0" expanded="true" />
-                <element signature="imports" expanded="true" />
-                <element signature="e#3056#3207#0" expanded="true" />
-                <element signature="e#3196#3197#0" expanded="true" />
-                <element signature="e#3339#3576#0" expanded="true" />
-                <element signature="e#3565#3566#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/ServerActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="60" column="27" selection-start="1957" selection-end="1957" vertical-scroll-proportion="0.0" vertical-offset="702" max-vertical-offset="2556">
-              <folding>
+                <element signature="e#0#19912#0" expanded="true" />
                 <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Camera.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/Camera.java">
+      <file leaf-file-name="Cube.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/Cube.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="29" selection-start="360" selection-end="360" vertical-scroll-proportion="0.0" vertical-offset="756" max-vertical-offset="2574">
+            <state line="62" column="13" selection-start="2008" selection-end="2008" vertical-scroll-proportion="0.0" vertical-offset="594" max-vertical-offset="2700">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MyGLRenderer.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/MyGLRenderer.java">
+      <file leaf-file-name="Tetra.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/Tetra.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="40" selection-start="1334" selection-end="1334" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1746">
+            <state line="43" column="7" selection-start="1421" selection-end="1421" vertical-scroll-proportion="0.0" vertical-offset="486" max-vertical-offset="2808">
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Shape.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/Shape.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="27" column="47" selection-start="648" selection-end="648" vertical-scroll-proportion="-0.19148937" vertical-offset="594" max-vertical-offset="1170">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -866,7 +862,7 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="1384630127822" />
+        <entry key="$PROJECT_DIR$" value="1385148771146" />
       </map>
     </option>
   </component>
@@ -879,14 +875,15 @@
         <option value="$PROJECT_DIR$/App/src/main/java/com/example/appf/Camera.java" />
         <option value="$PROJECT_DIR$/App/src/main/res/values/strings.xml" />
         <option value="$USER_HOME$/Desktop/SensorFusion/src/com/thousandthoughts/tutorials/SensorFusionActivity.java" />
-        <option value="$PROJECT_DIR$/App/src/main/java/com/example/appf/Cube.java" />
-        <option value="$PROJECT_DIR$/App/src/main/java/com/example/appf/OpenGLES20Complete.java" />
-        <option value="$PROJECT_DIR$/App/src/main/java/com/example/appf/Tetra.java" />
         <option value="$PROJECT_DIR$/App/src/main/java/com/example/appf/MyGLRenderer.java" />
         <option value="$PROJECT_DIR$/App/src/main/res/layout/server.xml" />
         <option value="$PROJECT_DIR$/App/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/App/src/main/java/com/example/appf/ServerActivity.java" />
+        <option value="$PROJECT_DIR$/App/src/main/java/com/example/appf/OpenGLES20Complete.java" />
         <option value="$PROJECT_DIR$/App/src/main/java/com/example/appf/CS3570.java" />
+        <option value="$PROJECT_DIR$/App/src/main/java/com/example/appf/Tetra.java" />
+        <option value="$PROJECT_DIR$/App/src/main/java/com/example/appf/Shape.java" />
+        <option value="$PROJECT_DIR$/App/src/main/java/com/example/appf/Cube.java" />
       </list>
     </option>
   </component>
@@ -1062,6 +1059,40 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="App" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyApplicationf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="App" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="appf" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CS3570.java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
@@ -1119,19 +1150,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -1157,6 +1175,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -1277,12 +1308,11 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="502" y="24" width="1400" height="991" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32937685" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39907193" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1292,7 +1322,7 @@
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29930395" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3130227" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3125" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1305,6 +1335,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2498615" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32937685" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1326,13 +1357,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/App/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="32" selection-start="775" selection-end="775" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="468">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/Cube.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="139" column="49" selection-start="5312" selection-end="5312" vertical-scroll-proportion="0.0" vertical-offset="2502" max-vertical-offset="3420">
@@ -1351,12 +1375,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="164" column="14" selection-start="6519" selection-end="6519" vertical-scroll-proportion="0.0" vertical-offset="2657" max-vertical-offset="8514">
           <folding>
-            <element signature="e#0#19942#0" expanded="true" />
+            <element signature="e#0#19912#0" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#3056#3207#0" expanded="true" />
-            <element signature="e#3196#3197#0" expanded="true" />
-            <element signature="e#3339#3576#0" expanded="true" />
-            <element signature="e#3565#3566#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1379,29 +1399,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/menu/main.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="23" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="288">
-          <folding />
-        </state>
+        <state line="6" column="23" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="288" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/layout/main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="558">
           <folding />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/src/main/res/layout/activity_main.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/src/main/res/layout/activity_main.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="234">
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/MainActivity.java">
@@ -1413,9 +1431,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="32" selection-start="775" selection-end="775" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="468">
-          <folding />
-        </state>
+        <state line="18" column="32" selection-start="775" selection-end="775" vertical-scroll-proportion="0.0" vertical-offset="324" max-vertical-offset="468" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/MyGLRenderer.java">
@@ -1436,12 +1452,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="112" column="16" selection-start="3655" selection-end="3655" vertical-scroll-proportion="0.0" vertical-offset="1926" max-vertical-offset="1926">
           <folding>
-            <element signature="e#0#19942#0" expanded="true" />
+            <element signature="e#0#19912#0" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#3056#3207#0" expanded="true" />
-            <element signature="e#3196#3197#0" expanded="true" />
-            <element signature="e#3339#3576#0" expanded="true" />
-            <element signature="e#3565#3566#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1454,20 +1466,18 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/layout/fragment_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="25" selection-start="540" selection-end="540" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="396">
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/menu/main.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="23" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="288">
-          <folding />
-        </state>
+        <state line="6" column="23" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="288" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/MainActivity.java">
@@ -1488,12 +1498,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="107" column="0" selection-start="3361" selection-end="3361" vertical-scroll-proportion="0.0" vertical-offset="1926" max-vertical-offset="2214">
           <folding>
-            <element signature="e#0#19942#0" expanded="true" />
+            <element signature="e#0#19912#0" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#3056#3207#0" expanded="true" />
-            <element signature="e#3196#3197#0" expanded="true" />
-            <element signature="e#3339#3576#0" expanded="true" />
-            <element signature="e#3565#3566#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1506,20 +1512,18 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/layout/fragment_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="25" selection-start="540" selection-end="540" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="396">
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/menu/main.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="23" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="288">
-          <folding />
-        </state>
+        <state line="6" column="23" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="288" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/MainActivity.java">
@@ -1540,12 +1544,8 @@
       <provider selected="true" editor-type-id="text-editor">
         <state line="107" column="0" selection-start="3361" selection-end="3361" vertical-scroll-proportion="0.0" vertical-offset="1926" max-vertical-offset="2214">
           <folding>
-            <element signature="e#0#19942#0" expanded="true" />
+            <element signature="e#0#19912#0" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#3056#3207#0" expanded="true" />
-            <element signature="e#3196#3197#0" expanded="true" />
-            <element signature="e#3339#3576#0" expanded="true" />
-            <element signature="e#3565#3566#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1558,20 +1558,18 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/layout/fragment_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="25" selection-start="540" selection-end="540" vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="396">
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/menu/main.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="23" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="288">
-          <folding />
-        </state>
+        <state line="6" column="23" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="288" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/MainActivity.java">
@@ -1589,13 +1587,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/layout/fragment_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="330">
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/opengl/GLES20.class">
@@ -1610,59 +1608,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Desktop/SensorFusion/src/com/thousandthoughts/tutorials/SensorFusionActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="417" column="16" selection-start="1799" selection-end="17166" vertical-scroll-proportion="0.0" vertical-offset="6325" max-vertical-offset="7020" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/menu/main.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="23" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="288">
-          <folding />
-        </state>
+        <state line="6" column="23" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="288" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/layout/main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="594">
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="594">
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="40" selection-start="452" selection-end="452" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="468">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/Tetra.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="185" column="26" selection-start="7425" selection-end="7425" vertical-scroll-proportion="3.0665557" vertical-offset="1487" max-vertical-offset="3654">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/Cube.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="163" column="49" selection-start="6271" selection-end="6271" vertical-scroll-proportion="2.5091515" vertical-offset="1282" max-vertical-offset="3276">
-          <folding />
-        </state>
+        <state line="10" column="40" selection-start="452" selection-end="452" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="468" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/build.gradle">
@@ -1689,65 +1662,87 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/layout/server.xml">
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider editor-type-id="text-editor">
         <state line="35" column="38" selection-start="1228" selection-end="1228" vertical-scroll-proportion="0.0" vertical-offset="468" max-vertical-offset="936">
           <folding />
         </state>
       </provider>
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/res/layout/fragment_main.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="25" selection-start="540" selection-end="540" vertical-scroll-proportion="0.375" vertical-offset="0" max-vertical-offset="528">
           <folding />
         </state>
       </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
     </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-19/android.jar!/android/view/View.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1070" column="19" selection-start="48561" selection-end="48561" vertical-scroll-proportion="0.0" vertical-offset="19084" max-vertical-offset="21384">
+        <state line="1070" column="19" selection-start="48561" selection-end="48561" vertical-scroll-proportion="0.0" vertical-offset="19084" max-vertical-offset="21384" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/OpenGLES20Complete.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="108">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/MyGLRenderer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="40" selection-start="1334" selection-end="1334" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1746">
+        <state line="48" column="31" selection-start="1583" selection-end="1583" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1746">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/CS3570.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="362" column="0" selection-start="12655" selection-end="12655" vertical-scroll-proportion="0.0" vertical-offset="10005" max-vertical-offset="10566">
+          <folding>
+            <element signature="e#0#19912#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/Tetra.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="7" selection-start="1421" selection-end="1421" vertical-scroll-proportion="0.0" vertical-offset="378" max-vertical-offset="2808">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/Cube.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="13" selection-start="2008" selection-end="2008" vertical-scroll-proportion="0.0" vertical-offset="594" max-vertical-offset="2700">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/Camera.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="29" selection-start="360" selection-end="360" vertical-scroll-proportion="0.0" vertical-offset="756" max-vertical-offset="2574">
+        <state line="115" column="27" selection-start="2646" selection-end="2646" vertical-scroll-proportion="-0.37205082" vertical-offset="2023" max-vertical-offset="2574">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/ServerActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="27" selection-start="1957" selection-end="1957" vertical-scroll-proportion="0.0" vertical-offset="972" max-vertical-offset="2556">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state line="95" column="20" selection-start="2924" selection-end="2924" vertical-scroll-proportion="0.17021276" vertical-offset="1200" max-vertical-offset="2142">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/CS3570.java">
+    <entry file="file://$PROJECT_DIR$/App/src/main/java/com/example/appf/Shape.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="126" column="12" selection-start="4288" selection-end="4288" vertical-scroll-proportion="0.84586465" vertical-offset="1818" max-vertical-offset="10728">
+        <state line="27" column="47" selection-start="648" selection-end="648" vertical-scroll-proportion="-0.19148937" vertical-offset="594" max-vertical-offset="1170">
           <folding>
-            <element signature="e#0#19942#0" expanded="true" />
             <element signature="imports" expanded="true" />
-            <element signature="e#3056#3207#0" expanded="true" />
-            <element signature="e#3196#3197#0" expanded="true" />
-            <element signature="e#3339#3576#0" expanded="true" />
-            <element signature="e#3565#3566#0" expanded="true" />
           </folding>
         </state>
       </provider>
