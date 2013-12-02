@@ -1,11 +1,5 @@
 package com.example.appf;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
-import java.nio.ShortBuffer;
-import java.util.Arrays;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -18,15 +12,15 @@ import android.util.Log;
 @TargetApi(Build.VERSION_CODES.FROYO)
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
-    private static final String TAG = "MyGLRenderer";
-    volatile Tetra   mSquare;
+    volatile Tetra mTetra;
+    volatile Cube mCube;
+    volatile Shader mShader;
     volatile Camera mCamera = new Camera();
     private float[] mMVPMatrix = new float[16];
     private final float[] mProjMatrix = new float[16];
     private float[] mVMatrix = new float[16];
 
     // Declare as volatile because we are updating it from another thread
-    public volatile float mAngle;
     @TargetApi(Build.VERSION_CODES.FROYO)
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -34,7 +28,12 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-        mSquare   = new Tetra();
+        mTetra = new Tetra();
+        mCube = new Cube();
+        mShader = new Shader();
+        mCube.setProgram(mShader.mProgram);
+        mTetra.setProgram(mShader.mProgram);
+        mCube.translate(1.0f, 0.0f, 0.0f);
     }
 
     @TargetApi(Build.VERSION_CODES.FROYO)
@@ -52,7 +51,8 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
         //mCamera.rotate(10, Camera.ROTATE_Z);
         // Draw square
-        mSquare.draw(mMVPMatrix);
+        mCube.draw(mMVPMatrix);
+        mTetra.draw(mMVPMatrix);
 
     }
 
@@ -70,36 +70,4 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     }
 
-    public static int loadShader(int type, String shaderCode){
-
-        // create a vertex shader type (GLES20.GL_VERTEX_SHADER)
-        // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)
-        int shader = GLES20.glCreateShader(type);
-
-        // add the source code to the shader and compile it
-        GLES20.glShaderSource(shader, shaderCode);
-        GLES20.glCompileShader(shader);
-
-        return shader;
-    }
-
-    /**
-     * Utility method for debugging OpenGL calls. Provide the name of the call
-     * just after making it:
-     *
-     * <pre>
-     * mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
-     * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
-     *
-     * If the operation is not successful, the check throws an error.
-     *
-     * @param glOperation - Name of the OpenGL call to check.
-     */
-    public static void checkGlError(String glOperation) {
-        int error;
-        while ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
-            Log.e(TAG, glOperation + ": glError " + error);
-            throw new RuntimeException(glOperation + ": glError " + error);
-        }
-    }
 }

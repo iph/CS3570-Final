@@ -9,6 +9,10 @@ public class Camera{
     public static final int ROTATE_X = 1;
     public static final int ROTATE_Y = 2;
     public static final int ROTATE_Z = 4;
+
+    boolean isOther;
+    private float[] viewMatrix;
+
     private Vector3 m_position;
     private Vector3 m_nVector;
     private Vector3 m_uVector;
@@ -16,6 +20,7 @@ public class Camera{
 
 
     public Camera(){
+        isOther = false;
         m_position = Vector3.zero();
         m_nVector = Vector3.zero();
         m_uVector = Vector3.zero();
@@ -110,6 +115,11 @@ public class Camera{
         rotate(m_nVector, angle);
     }
 
+
+    public void setViewMatrix(float[] v){
+        isOther = true;
+        viewMatrix = v;
+    }
     public void rotate(Vector3 axis, double angle)
     {
         // Note: We try and optimise things a little by observing that there's no point rotating
@@ -142,9 +152,14 @@ public class Camera{
     @TargetApi(Build.VERSION_CODES.FROYO)
     public float[] getViewMatrix(){
         float[] mvMatrix = new float[16];
-        Matrix.setLookAtM(mvMatrix, 0, m_position.getX(), m_position.getY(), m_position.getZ(),
+        if(!isOther){
+            Matrix.setLookAtM(mvMatrix, 0, m_position.getX(), m_position.getY(), m_position.getZ(),
                 m_position.getX() + m_nVector.getX(), m_position.getY() + m_nVector.getY(), m_position.getZ() + m_nVector.getZ(),
                 m_vVector.getX(), m_vVector.getY(), m_vVector.getZ());
+        }
+        else{
+            mvMatrix = viewMatrix;
+        }
         return mvMatrix;
     }
 

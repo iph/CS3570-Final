@@ -57,17 +57,17 @@ public class CS3570 extends Activity implements SensorEventListener {
     float previousAzimuth = Float.MAX_VALUE;
     float previousRoll = Float.MAX_VALUE;
     float previousPitch = Float.MAX_VALUE;
-    public final static float THRESHOLD = .0005f;
     public final static float ROTATE_AMPLIFY = 0.5f;
-    float[] mGeomagnetic;
-    float[] mGyroscopeEvent;
+    public final static float THRESHOLD = .0005f;
     private MyGLSurfaceView mGLView;
     private SensorManager mSensorManager;
+    float[] mGyroscopeEvent;
+    float[] mGeomagnetic;
     Sensor accelerometer;
     Sensor magnetometer;
     IMUfilter filter;
     private Sensor gyroscope;
-
+    String jsonBlob;
     private Socket socket;
     PrintWriter out;
     private BufferedReader in;
@@ -83,6 +83,8 @@ public class CS3570 extends Activity implements SensorEventListener {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         cam = false;
+
+	// Just in case we are coming from the ServerActivity
         if(extras != null){
             if(extras.containsKey("server_name"))
                 SERVER_IP = extras.getString("server_name");
@@ -91,6 +93,8 @@ public class CS3570 extends Activity implements SensorEventListener {
         }
         filter = new IMUfilter(.1f, 5);
         filter.reset();
+
+	// Set up reset button
         Button b = new Button(this);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +104,7 @@ public class CS3570 extends Activity implements SensorEventListener {
         });
         b.setText("Reset");
 
+	// Set up camera mode. Are we going to use this?
         Button c = new Button(this);
         c.setText("Camera Mode");
         c.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +165,7 @@ public class CS3570 extends Activity implements SensorEventListener {
 
 
 
-        if(mGravity != null && mGyroscopeEvent != null && mGLView != null && mGLView.mRenderer.mSquare != null){
+        if(mGravity != null && mGyroscopeEvent != null && mGLView != null && mGLView.mRenderer.mTetra != null){
             filter.updateFilter(mGyroscopeEvent[0], mGyroscopeEvent[1], mGyroscopeEvent[2], mGravity[0], mGravity[1], mGravity[2]);
             filter.computerEuler();
             azimut = (float)filter.getYaw(); // orientation contains: azimut, pitch and roll
@@ -189,9 +194,9 @@ public class CS3570 extends Activity implements SensorEventListener {
                 previousRoll = roll;
                 if(cam)
                     mGLView.mRenderer.mCamera.rotateX(delta_roll * 180.0/Math.PI * ROTATE_AMPLIFY);
-                //mGLView.mRenderer.mSquare.rotate((float) (delta_roll * 180.0 / Math.PI) * ROTATE_AMPLIFY, 1, 0, 0);
+                //mGLView.mRenderer.mTetra.rotate((float) (delta_roll * 180.0 / Math.PI) * ROTATE_AMPLIFY, 1, 0, 0);
                 else
-                mGLView.mRenderer.mSquare.pure_rotate((float) ((roll + Math.PI)* 180.0 / Math.PI), 1, 0, 0);
+                mGLView.mRenderer.mTetra.pure_rotate((float) ((roll + Math.PI)* 180.0 / Math.PI), 1, 0, 0);
             }
 
             if(Math.abs(delta_pitch) > THRESHOLD && pitch != Float.NaN){
@@ -200,7 +205,7 @@ public class CS3570 extends Activity implements SensorEventListener {
                     mGLView.mRenderer.mCamera.rotateX(delta_pitch * 180.0/Math.PI  * ROTATE_AMPLIFY );
                 //Log.e("eee", "" + ((delta_pitch)* 180.0 / Math.PI) );
                 else
-                    mGLView.mRenderer.mSquare.pure_rotate((float) ((pitch + Math.PI) * 180.0 / Math.PI), 0, 1, 0);
+                    mGLView.mRenderer.mTetra.pure_rotate((float) ((pitch + Math.PI) * 180.0 / Math.PI), 0, 1, 0);
 
 
             }
@@ -210,8 +215,8 @@ public class CS3570 extends Activity implements SensorEventListener {
                 if(cam)
                     mGLView.mRenderer.mCamera.rotateY(delta_azimut * 180.0/Math.PI  * ROTATE_AMPLIFY);
                 else
-                    //mGLView.mRenderer.mSquare.rotate((float)(delta_azimut * 180.0/Math.PI) * ROTATE_AMPLIFY, 0, 0, 1 );
-                mGLView.mRenderer.mSquare.pure_rotate((float)(azimut * 180.0/Math.PI) , 0, 0, 1 );
+                    //mGLView.mRenderer.mTetra.rotate((float)(delta_azimut * 180.0/Math.PI) * ROTATE_AMPLIFY, 0, 0, 1 );
+                mGLView.mRenderer.mTetra.pure_rotate((float)(azimut * 180.0/Math.PI) , 0, 0, 1 );
             }
 
             if(out != null){
@@ -248,6 +253,14 @@ public class CS3570 extends Activity implements SensorEventListener {
                 while((!Thread.currentThread().isInterrupted())){
                     Log.d("pew", in.toString());
                     String currentText = in.readLine();
+		    jsonBlob += currentText;
+		    if(jsonBlob.indexOf('\0') > 0){
+			jsonBlob =jsonBlob.substring(0, jsonBlob.indexOf('\0'));
+			JSONObject obj = new JSONObject(jsonBlob);
+			// TODO: Create / do some json action
+			
+			jsonBlob = '';
+		    }
                     Log.d("pew", handler.toString());
                     handler.post(new updateUIThread(currentText));
 
@@ -363,8 +376,8 @@ class MyGLSurfaceView extends GLSurfaceView {
                 }
 
                 //mRenderer.mAngle += (dx + dy) * TOUCH_SCALE_FACTOR;  // = 180.0f / 320
-                //mRenderer.mSquare.rotate(dx, 0, 1, 0);
-                //mRenderer.mSquare.rotate(dy, 1, 0, 0);
+                //mRenderer.mTetra.rotate(dx, 0, 1, 0);
+                //mRenderer.mTetra.rotate(dy, 1, 0, 0);
                 //mRenderer.mCamera.rotateY((double)(dx * TOUCH_SCALE_FACTOR));
                 //mRenderer.mCamera.rotateX((double)(dy * TOUCH_SCALE_FACTOR));
                 if(mother.out != null){
